@@ -178,6 +178,8 @@ String sendData(String command, const int timeout, boolean debug) {
 void InitWifiModule() {
   sendData("AT+RST\r\n", 2000, DEBUG);
 
+  sendData("AT+SYSSTORE=0\r\n", 1000, DEBUG);
+
   String settingscommand = ("AT+CWSAP='"+ssid+"','"+pw+"',3,3\r\n");
 
   Serial.println(settingscommand);
