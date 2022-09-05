@@ -8,6 +8,10 @@ SoftwareSerial esp8266(3,2);
 
 int lamp = 11;
 
+int bright = 0;
+
+bool status = false;
+
 String ssid = "Test";
 
 String pw = "Test12345";
@@ -42,26 +46,25 @@ void loop() {
 
         int connectionid = result.charAt(0) - 48;
 
-        int start = result.indexOf("/?act");
+        /*int start = result.indexOf("/?act");
         int end = result.indexOf(" HTTP");
         bool favi = (result.indexOf("favicon.ico") != -1);
         bool isact = (result.indexOf("act=") != -1);          // check if request is valid
 
         Serial.println("Start:" + String(start));
-        Serial.println("End:" + String(end));
+        Serial.println("End:" + String(end));*/
 
-        if(start != -1 && end != -1 && favi != true && isact == true) {
+        /*if(start != -1 && end != -1 && favi != true && isact == true) {
           String substr = result.substring((start + 2),end);
-          Serial.println("Substr:" + substr);
-          sendResponse(200, connectionid);
-        } else if(favi == true) {
+          Serial.println("Substr:" + substr);*/
+        sendResponse(processRequest(result), connectionid);
+        /*} else if(favi == true) {
           sendResponse(204, connectionid);
         } else {
           sendResponse(400, connectionid);
-        }
+        }*/
 
-        delay(200);
-        Serial.println(connectionid);
+        delay(100);
 
         String closeCommand = "AT+CIPCLOSE=";
 
@@ -72,14 +75,63 @@ void loop() {
     }
 }
 
+int processRequest(String result) {
+  if(result.indexOf("favicon.ico") != -1) {
+    return 204;
+  }
+  int act = result.indexOf("act=");
+  String param = result.substring(act, result.indexOf(" HTTP"));
+  int arg1 = param.indexOf("&arg1=");
+  int arg2 = param.indexOf("&arg2=");
+  int arg3 = param.indexOf("&arg3=");
+  if(act == -1 || arg1 == -1) {
+    return 400;
+  }
+  String actstr = param.substring(4, arg1);
+  if(actstr == "toggle" && arg1 != -1) {
+    int arg1num = param.substring((arg1 + 6)).toInt();
+    if(arg1num == 0) {
+      analogWrite(lamp, 0);
+      status = false;
+      return 200;
+    } else if(arg1num == 1) {
+      if(bright == 0) {
+        bright = 255;
+      }
+      analogWrite(lamp, bright);
+      status = true;
+      return 200;
+    }
+  } else if(actstr == "bright" && arg1 != -1) {
+    int arg1num = param.substring((arg1 + 6)).toInt();
+    Serial.println(param.substring(arg1 + 6));
+    Serial.println(arg1num);
+    if(arg1num <= 100 && arg1num >= 0) {
+      bright = map(arg1num, 0, 100, 0, 255);
+      analogWrite(lamp, bright);
+      if(arg1num == 0) {
+        status = false;
+      } else {
+        status = true;
+      }
+      return 200;
+    }
+  }
+  return 400;
+}
+
 void sendResponse(int code, int conid) {    //Respond #1
   String page = "";
+  String statusstr = ((status)? "On":"Off");
+  char brightstr[20];
+  itoa(bright, brightstr, 10);
   if(code == 200) {
     page = ("HTTP/1.1 200 OK\r\n"
     "Content-Type: text/plain\r\n"
     "Connection: Closed\r\n"
-    "\r\n"
-    "This is test!\r\n");
+    "\r\n" 
+    "Status: " + statusstr + "\r\n" 
+    "Bright: " + brightstr + "\r\n");
   } else if(code == 204) {
     page = ("HTTP/1.1 204 No Content\r\n"
     "Connection: Closed\r\n"
@@ -98,11 +150,15 @@ void sendResponse(int code, int conid) {    //Respond #1
     "Not Found!\r\n");
   }
 
+  Serial.println(page);
+
   int len = page.length();
+
+  Serial.println(len);
 
   sendData("AT+CIPSEND=" + String(conid) + "," + String(len) + "\r\n", 100, DEBUG);
 
-  delay(200);
+  delay(100);
 
   esp8266.print(page);
 }
@@ -178,9 +234,7 @@ String sendData(String command, const int timeout, boolean debug) {
 void InitWifiModule() {
   sendData("AT+RST\r\n", 2000, DEBUG);
 
-  sendData("AT+SYSSTORE=0\r\n", 1000, DEBUG);
-
-  String settingscommand = ("AT+CWSAP='"+ssid+"','"+pw+"',3,3\r\n");
+  String settingscommand = ("AT+CWSAP=\""+ssid+"\",\""+pw+"\",3,3\r\n");
 
   Serial.println(settingscommand);
 
