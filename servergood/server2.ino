@@ -44,9 +44,24 @@ void loop() {
 
                 result+=c;
             }
-        }
+        }        
 
         int connectionid = result.charAt(0) - 48;
+
+        if(result.indexOf("+IPD,") != -1) {
+          Serial.println("Yes second");
+          String secondresult = result.substring((result.indexOf("+IPD,")+4));
+          result = result.substring(0, result.indexOf("+IPD,"));
+          int connectionid2 = secondresult.charAt(0) - 48;
+          sendResponse(processRequest(secondresult), connectionid2);
+
+          delay(500);
+          String closeCommand2 = "AT+CIPCLOSE=";
+          closeCommand2+=connectionid2;
+          closeCommand2+="\r\n";
+
+          sendData(closeCommand2, 20, DEBUG);
+        }
 
         /*int start = result.indexOf("/?act");
         int end = result.indexOf(" HTTP");
@@ -126,27 +141,29 @@ int processRequest(String result) {
 }
 
 void sendResponse(int code, int conid) {    //Respond #1
-  String page = "";
+  String header = "";
+  String content = "";
   String statusstr = ((status)? "On":"Off");
   if(code == 200) {
-    page = ("HTTP/1.1 200 OK\r\n"
+    header = ("HTTP/1.1 200 OK\r\n"
     "Content-Type: text/plain\r\n"
     "Connection: Closed\r\n"
-    "\r\n"
-    "Status: " + statusstr + "\rB \r\n"
-    );
+    "\r\n");
+    
+    content = ("Status: " + statusstr + "\r\n"
+    "Brightness: " + String(bright) + "\r\n");
   } else if(code == 204) {
-    page = ("HTTP/1.1 204 No Content\r\n"
+    header = ("HTTP/1.1 204 No Content\r\n"
     "Connection: Closed\r\n"
     "\r\n");
   } else if(code == 400) {
-    page = ("HTTP/1.1 400 Bad Request\r\n"
+    header = ("HTTP/1.1 400 Bad Request\r\n"
     "Connection: Closed\r\n"
     "Content-Type: text/plain\r\n"
     "\r\n"
     "Invalid request!\r\n");
   } else if(code == 404) {
-    page = ("HTTP/1.1 404 Not Found\r\n"
+    header = ("HTTP/1.1 404 Not Found\r\n"
     "Connection: Closed\r\n"
     "Content-Type: text/plain\r\n"
     "\r\n"
@@ -155,11 +172,15 @@ void sendResponse(int code, int conid) {    //Respond #1
 
   Serial.println("Page begin: ");
 
-  Serial.println(page);
+  Serial.println(header);
+
+  Serial.println(content);
 
   Serial.println("Page end");
 
-  int len = page.length();
+  int len = 0;
+  len+=header.length();
+  len+=content.length();
 
   Serial.println(len);
 
@@ -167,7 +188,10 @@ void sendResponse(int code, int conid) {    //Respond #1
 
   delay(200);
 
-  esp8266.print(page);
+  esp8266.print(header);
+  if(content != "") {
+    esp8266.print(content);
+  }
 }
 
 /*
