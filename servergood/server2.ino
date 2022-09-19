@@ -48,7 +48,7 @@ void loop() {
 
         int connectionid = result.charAt(0) - 48;
 
-        if(result.indexOf("+IPD,") != -1) {
+        /*if(result.indexOf("+IPD,") != -1) {
           Serial.println("Yes second");
           String secondresult = result.substring((result.indexOf("+IPD,")+4));
           result = result.substring(0, result.indexOf("+IPD,"));
@@ -61,7 +61,7 @@ void loop() {
           closeCommand2+="\r\n";
 
           sendData(closeCommand2, 20, DEBUG);
-        }
+        }*/
 
         /*int start = result.indexOf("/?act");
         int end = result.indexOf(" HTTP");
@@ -184,7 +184,9 @@ void sendResponse(int code, int conid) {    //Respond #1
 
   Serial.println(len);
 
-  sendData("AT+CIPSEND=" + String(conid) + "," + String(len) + "\r\n", 100, DEBUG);
+  //sendData("AT+CIPSEND=" + String(conid) + "," + String(len) + "\r\n", 100, DEBUG);
+
+  esp8266.print("AT+CIPSEND=" + String(conid) + "," + String(len) + "\r\n");
 
   delay(200);
 
