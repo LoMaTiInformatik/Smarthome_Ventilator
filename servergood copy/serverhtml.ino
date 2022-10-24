@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-#include <Servo.h>
+//#include <Servo.h>
 
 SoftwareSerial esp8266(3,2);
 //Servo servo;
@@ -87,7 +87,7 @@ void loop() {
           sendResponse(400, connectionid);
         }*/
 
-        delay(500);
+        delay(2000);
 
         String closeCommand = "AT+CIPCLOSE=";
 
@@ -156,16 +156,27 @@ int processRequest(String result) {
 
 void sendResponse(int code, int conid) {    //Respond #1
   String header = "";
-  String content[] = {};
+  String content = "";
   String statusstr = ((status)? "On":"Off");
+  bool ishtml = false;
+  int basichtml = 48;
+  int headlen = 0;
+  int conlen = 0;
   if(code == 200) {
     header = ("HTTP/1.1 200 OK\r\n"
     "Content-Type: text/html\r\n"
     "Connection: Closed\r\n"
     "\r\n");
 
-    content[0] = ("Status: " + statusstr + "\r\n");
-    content[1] = ("Brightness: " + String(bright) + "\r\n");
+    content = "<p style=font-size: 20px;>Test</p>";
+
+    headlen = header.length();
+    //conlen = content.length();
+
+    ishtml = true;
+
+    //content[0] = ("Status: " + statusstr + "\r\n");
+    //content[1] = ("Brightness: " + String(bright) + "\r\n");
     
     /*content = ("Status: " + statusstr + "\r\n"
     "Brightness: " + String(bright) + "\r\n");*/
@@ -173,36 +184,38 @@ void sendResponse(int code, int conid) {    //Respond #1
     header = ("HTTP/1.1 204 No Content\r\n"
     "Connection: Closed\r\n"
     "\r\n");
+
+    headlen = 48;
   } else if(code == 400) {
     header = ("HTTP/1.1 400 Bad Request\r\n"
     "Connection: Closed\r\n"
     "Content-Type: text/plain\r\n"
     "\r\n"
     "Invalid request!\r\n");
+
+    headlen = 93;
   } else if(code == 404) {
     header = ("HTTP/1.1 404 Not Found\r\n"
     "Connection: Closed\r\n"
     "Content-Type: text/plain\r\n"
     "\r\n"
     "Not Found!\r\n");
-  }
 
-  int csize = (sizeof(content) - 1);
+    headlen = 85;
+  }
 
   Serial.println("Page begin: ");
 
   Serial.println(header);
 
-  for (int i = 0; i >= csize; i++) {
-    Serial.println(content[i]);
-  }
+  Serial.println(content);
 
   Serial.println("Page end");
 
-  int len = 0;
-  len+=header.length();
-  for (int i = 0; i >= csize; i++) {
-    len+=content[i].length();
+  int len = headlen + conlen;
+
+  if(ishtml) {
+    len += basichtml;
   }
 
   Serial.println(len);
@@ -214,10 +227,10 @@ void sendResponse(int code, int conid) {    //Respond #1
   delay(200);
 
   esp8266.print(header);
-  if(csize != -1) {
-    for (int i = 0; i >= csize; i++) {
-      esp8266.print(content[i]);
-    }
+  if(ishtml) {
+    esp8266.print("<html>\r<head>\r</head>\r<body>\r");
+    //esp8266.print(content);
+    esp8266.print("</body>\r</html>\r\n");
   }
 }
 
@@ -296,15 +309,15 @@ void InitWifiModule() {
 
   Serial.println(settingscommand);
 
-  sendData("AT+CWMODE=2\r\n", 1500, DEBUG);
+  sendData("AT+CWMODE=2\r\n", 1000, DEBUG);
 
-  sendData(settingscommand, 1500, DEBUG);
+  sendData(settingscommand, 1000, DEBUG);
   //delay(1000);
-  sendData("AT+CIFSR\r\n", 1500, DEBUG);
+  sendData("AT+CIFSR\r\n", 1000, DEBUG);
 
   //delay(1000);
   sendData("AT+CIPMUX=1\r\n",1000,DEBUG);
 
   //delay(1000);
-  sendData("AT+CIPSERVER=1,80\r\n", 1500, DEBUG);
+  sendData("AT+CIPSERVER=1,80\r\n", 1000, DEBUG);
 }
