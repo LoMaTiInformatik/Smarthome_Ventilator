@@ -1,5 +1,21 @@
 /*
   * 
+  * Wiring
+  * 
+  * ESP8266:
+  * 
+  * - TX: 2
+  * - RX: 3
+  * - EN: 3.3V
+  * - 3.3V: 3.3V
+  * - GND: GND
+  * 
+  * Controller Arduino:
+  * 
+  * - TX(0): 4
+  * - RX(1): 5
+  * - GND: GND
+  * 
   * Settings
   * 
   * DeviceName: Name to be shown in Homebridge
@@ -21,6 +37,7 @@ bool AccessPointMode = true;
 #include <SoftwareSerial.h>
 
 SoftwareSerial esp8266(3, 2);
+SoftwareSerial controller(5, 4);
 
 #define serialCommunicationSpeed 9600
 
@@ -53,6 +70,26 @@ void setup()
   Serial.begin(serialCommunicationSpeed);
 
   esp8266.begin(serialCommunicationSpeed);
+
+  controller.begin(serialCommunicationSpeed);
+
+  controller.print("i");
+
+  bool active = true;
+
+  long int mils = millis();
+
+  while (active == false) {
+    while(controller.available()) {
+      char chara = controller.read();
+      if (chara == 'i') {
+        active = true;
+      }
+    }
+    if (millis() - mils > 5000) {
+      Serial.println("Error while initializing controller!");
+    }
+  }
 
   InitWifiModule();
 
@@ -149,7 +186,7 @@ int processRequest(String result)
       errormsglen = 27;
       return 400;
     }
-    sendSettings(actstr, arg1num);
+    sendSettings(97, arg1num);
     return 200;
   }
   else if (actstr == "speed" && arg1 != -1)
@@ -160,7 +197,7 @@ int processRequest(String result)
       errormsglen = 27;
       return 400;
     }
-    sendSettings(actstr, arg1num);
+    sendSettings(98, arg1num);
     return 200;
   }
   else if (actstr == "swing" && arg1 != -1)
@@ -171,7 +208,7 @@ int processRequest(String result)
       errormsglen = 27;
       return 400;
     }
-    sendSettings(actstr, arg1num);
+    sendSettings(103, arg1num);
     return 200;
   }
   errormsg = "Act: Unknown value";
@@ -290,6 +327,28 @@ String sendData(String command, const int timeout, boolean debug)
   return response;
 }
 
+void sendSettings(int action, int value)
+{
+  /*
+    * 
+    * Data:
+    * 
+    * a(97): Turn off
+    * b(98): Turn on
+    * c(99): Speed 1
+    * d(100): Speed 2
+    * e(101): Speed 3
+    * f(102): Speed 4
+    * g(103): Swing off
+    * h(104): Swing on
+    * 
+  */
+
+  // #2 Send instructions to controller
+  int num = action+value;
+  controller.write(num);
+}
+
 void InitWifiModule()
 {
   sendData("AT+RST\r\n", 2000, DEBUG);
@@ -313,10 +372,4 @@ void InitWifiModule()
 
   // delay(1000);
   sendData("AT+CIPSERVER=1,80\r\n", 1000, DEBUG);
-}
-
-void sendSettings(String action, int value)
-{
-  Serial.println("Command: " + action + ", Value: " + String(value));
-  return;
 }
