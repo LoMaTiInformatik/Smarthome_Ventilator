@@ -60,6 +60,9 @@ int answergdilen = answergdi.length();
 int errormsglen = 0;
 int defaulterrormsglen = 27;
 
+// Error handling
+int errorled = 6;
+
 // Settings
 int powerval = 0;
 int speedval = 1;
@@ -67,9 +70,17 @@ int swingval = 0;
 
 void setup()
 {
+  pinMode(errorled, OUTPUT);
+
+  digitalWrite(errorled, LOW);
+
   Serial.begin(serialCommunicationSpeed);
 
   esp8266.begin(serialCommunicationSpeed);
+
+  if (!esp8266) {
+    handleErrors(3);
+  }
 
   /*controller.begin(serialCommunicationSpeed);
 
@@ -350,6 +361,61 @@ void sendSettings(int action, int value)
   //controller.write(num);
 }
 
+void handleErrors(int errorid) {
+  digitalWrite(errorled, HIGH);
+  while(true) {
+    /*
+    * 
+    * Error Ids
+    * 
+    * 1: Failed to initialize controller
+    * 2: Could not connect to wifi
+    * 3: Failed to initialize esp8266 Serial
+    * 
+    */
+    if (errorid == 1) {
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(2000);
+    } else if (errorid == 2) {
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(2000);
+    } else if (errorid == 3) {
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(500);
+      digitalWrite(errorled, LOW);
+      delay(500);
+      digitalWrite(errorled, HIGH);
+      delay(2000);
+    }
+  }
+}
+
 void InitWifiModule()
 {
   sendData("AT+RST\r\n", 2000, DEBUG);
@@ -367,6 +433,10 @@ void InitWifiModule()
   sendData(settingscommand, 1000, DEBUG);
   // delay(1000);
   sendData("AT+CIFSR\r\n", 1000, DEBUG);
+
+  if (sendData("AT+CWSTATE?\r\n", 1000, DEBUG).substring(10,10).toInt() != 2 && AccessPointMode == false) {
+    handleErrors(2);
+  }
 
   // delay(1000);
   sendData("AT+CIPMUX=1\r\n", 1000, DEBUG);
