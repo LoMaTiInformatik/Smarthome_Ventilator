@@ -341,6 +341,7 @@ void sendSettings(int action, int value)
     * f(102): Speed 4
     * g(103): Swing off
     * h(104): Swing on
+    * i(105): Initialisation key (DO NOT SEND!)
     * 
   */
 
