@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "servergood copy\\serverhtml.ino",
+    "sketch": "server homebridge test\\serverhomebridge.ino",
     "port": "COM4"
 }
