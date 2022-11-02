@@ -37,7 +37,7 @@ bool AccessPointMode = true;
 #include <SoftwareSerial.h>
 
 SoftwareSerial esp8266(3, 2);
-SoftwareSerial controller(5, 4);
+//SoftwareSerial controller(5, 4);
 
 #define serialCommunicationSpeed 9600
 
@@ -71,7 +71,7 @@ void setup()
 
   esp8266.begin(serialCommunicationSpeed);
 
-  controller.begin(serialCommunicationSpeed);
+  /*controller.begin(serialCommunicationSpeed);
 
   controller.print("i");
 
@@ -89,7 +89,7 @@ void setup()
     if (millis() - mils > 5000) {
       Serial.println("Error while initializing controller!");
     }
-  }
+  }*/
 
   InitWifiModule();
 
@@ -347,7 +347,7 @@ void sendSettings(int action, int value)
 
   // #2 Send instructions to controller
   int num = action+value;
-  controller.write(num);
+  //controller.write(num);
 }
 
 void InitWifiModule()
