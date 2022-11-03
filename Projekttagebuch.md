@@ -10,7 +10,7 @@
 </picture>
 
 <h3 align="left">Stormarnschule Ahrensburg <br/> Informatik, Buhl <br/> Schuljahr 2022/23, 1. Halbjahr </br> </h3> </div>
-<h3 align="left"> &#10132; <a href="https://github.com/OrangePurgatory/SSIU.Ventilatorsteuerung/blob/main/Projektseite.md"> Projektseite</a> </h3> 
+<h3 align="left"> &#10132; <a href="https://github.com/LoMaTiInformatik/Smarthome_Ventilator/blob/main/README.md"> Projektseite</a> </h3> 
 </br>
 
 
