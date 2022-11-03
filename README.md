@@ -1,10 +1,13 @@
 ## Inhalt
 1.  [Einführung](#1einführung)
-2.  Protokolle
-<details>
-    -   Test
+2.  <details><summary>Protokolle</summary>
+    -   Test1
     -   Test2
-</details>
+    -   Test3
+    </details>
+3.  Tester
+
+
 ## 1. Einführung
 Test big boi dong
 
