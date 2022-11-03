@@ -78,9 +78,9 @@ void setup()
 
   esp8266.begin(serialCommunicationSpeed);
 
-  if (!esp8266) {
+  /*if (!esp8266) {
     handleErrors(3);
-  }
+  }*/
 
   /*controller.begin(serialCommunicationSpeed);
 
@@ -111,25 +111,26 @@ void loop()
 {
   if (esp8266.find("+IPD,"))
   { // look for request start
-    int timeout = 500;
-    long int times = millis();
+    int timeout = 500 + millis();
 
     String result = "";
 
-    while ((times + timeout) > millis())
+    while (millis() < timeout)
     { // save whole request
       while (esp8266.available())
       {
-        char c = esp8266.read();
+        const char c = esp8266.read();
 
         result += c;
       }
     }
 
+    Serial.println(result);
+
     // Get connection id
 
     int connectionid = result.charAt(0) - 48;
-
+    
     // Process request and send response
 
     sendResponse(processRequest(result), connectionid);
@@ -144,9 +145,7 @@ void loop()
     closeCommand += "\r\n";
 
     sendData(closeCommand, 20, DEBUG);
-  }
-  else
-  {
+    
     // Do less important work when there is no request
     answerstatus = "{\"power\":\"" + String(powerval) + "\",\"speed\":\"" + String(speedval) + "\",\"swing\":\"" + String(swingval) + "\"}";
     answerstatuslen = answerstatus.length();
@@ -157,7 +156,6 @@ void loop()
 
 int processRequest(String result)
 {
-  Serial.print(result);
 
   // Check for favicon or status/info requests
 
@@ -181,7 +179,7 @@ int processRequest(String result)
   int arg3 = param.indexOf("&arg3=");
   if (act == -1 || arg1 == -1)
   {
-    errormsg = "Function: No action or value";
+    errormsg = "Function: No action or value\r\n";
     errormsglen = 29;
     return 400;
   }
@@ -193,7 +191,7 @@ int processRequest(String result)
   {
     int arg1num = param.substring((arg1 + 6)).toInt();
     if (arg1num > 1 || arg1num < 0) {
-      errormsg = "Power: Number out of range";
+      errormsg = "Power: Number out of range\r\n";
       errormsglen = 27;
       return 400;
     }
@@ -204,7 +202,7 @@ int processRequest(String result)
   {
     int arg1num = param.substring((arg1 + 6)).toInt();
     if (arg1num > 4 || arg1num < 1) {
-      errormsg = "Speed: Number out of range";
+      errormsg = "Speed: Number out of range\r\n";
       errormsglen = 27;
       return 400;
     }
@@ -215,14 +213,14 @@ int processRequest(String result)
   {
     int arg1num = param.substring((arg1 + 6)).toInt();
     if (arg1num > 1 || arg1num < 0) {
-      errormsg = "Swing: Number out of range";
+      errormsg = "Swing: Number out of range\r\n";
       errormsglen = 27;
       return 400;
     }
     sendSettings(103, arg1num);
     return 200;
   }
-  errormsg = "Act: Unknown value";
+  errormsg = "Act: Unknown value\r\n";
   errormsglen = 19;
   return 400;
 }
@@ -274,7 +272,7 @@ void sendResponse(int code, int conid)
     bool errmsgexist = (errormsg != "");
     content = (errmsgexist) ? errormsg : defaulterrormsg;
 
-    headlen = header.length();
+    headlen = 75;
     conlen = (errmsgexist) ? errormsglen : defaulterrormsglen;
 
     errormsg = "";
@@ -320,7 +318,7 @@ String sendData(String command, const int timeout, boolean debug)
 
   esp8266.print(command);
 
-  long int times = millis();
+  int times = millis();
 
   while ((times + timeout) > millis())
   {
@@ -434,8 +432,10 @@ void InitWifiModule()
   // delay(1000);
   sendData("AT+CIFSR\r\n", 1000, DEBUG);
 
-  if (sendData("AT+CWSTATE?\r\n", 1000, DEBUG).substring(10,10).toInt() != 2 && AccessPointMode == false) {
-    handleErrors(2);
+  if (AccessPointMode == false) {
+    if (sendData("AT+CWSTATE?\r\n", 1000, DEBUG).substring(10,10).toInt() != 2) {
+      handleErrors(2);
+    }
   }
 
   // delay(1000);

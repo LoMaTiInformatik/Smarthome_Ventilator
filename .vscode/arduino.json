@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "server homebridge test\\serverhomebridge.ino",
+    "sketch": "src\\server\\serverhomebridge.ino",
     "port": "COM4"
 }

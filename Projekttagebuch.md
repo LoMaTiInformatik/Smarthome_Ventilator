@@ -33,6 +33,7 @@
   <li><a href="#stundenprotokoll-zum-26092022">Stundenprotokoll zum 26.09.2022</a></li>
   <li><a href="#stundenprotokoll-zum-06102022">Stundenprotokoll zum 06.10.2022</a></li>
   <li><a href="#stundenprotokoll-zum-24102022">Stundenprotokoll zum 24.10.2022</a></li>
+  <li><a href="#stundenprotokoll-zum-03112022">Stundenprotokoll zum 03.11.2022</a></li>
 </ul></details></li>
 <li style="margin-top: 5px;"><a href="#kapitel3">3. Ideen und To Do's</a></li>
 <li><a href="#kapitel4">4. Materialien</a></li>
@@ -120,7 +121,7 @@ void loop()
 </details>
   
 
-### Stundenprotokoll 19.09.2022
+### Stundenprotokoll zum 19.09.2022
 Wir haben heute an einem Script gearbeitet, dass einen Servo Motor auf Knopfdruck drehen lässt. Das Script funktioniert von Grund auf, enthält allerdings Bugs, die den Servo Motor zum zittern bringt. Es muss in der nächsten Zeit daran gearbeitet werden, diese Bugs zu beheben. Der dazugehörige Code befindet sich unten angehängt. Währenddessen war Lois mit dem W-Lan Modul am Kämpfen. Dieses schickte keine vollstänge Antwort. Der Fehler war dann am Ende der Stunde behoben.
   
 <details>
@@ -161,7 +162,7 @@ void loop() {
 ```
 </details>
   
-### Stundenprotokoll 22.09.2022
+### Stundenprotokoll zum 22.09.2022
 Heute haben wir an weiter an dem Code von der letzten Stunde gearbeitet und versucht das Problem mit dem zittern zu beheben, mit Erfolg. Der voll funktionstüchtige Code, ohne Bugs, ist unten in der Summary zu finden. Wir haben es so gemacht, dass bei jedem Tastendruck, die Tastendrücke gezählt werden und bei jedem neuen Tastendruck, sich der Arduino in die andere Richtung dreht. Zeitgleich versuchte Lois einen Servo mit dem W-Lan Modul zu verknüpfen, welches sich wieder sträubte eine vollständige Antwort zu schicken. Das Problem lag an der "Servo.h" API, die aus irgendeinem unbekannten Grund das W-Lan Modul beeinträchtigt.
 
 <details>
@@ -214,10 +215,10 @@ void loop() {
 ```
 </details>
   
-### Stundenprotokoll 26.09.2022
+### Stundenprotokoll zum 26.09.2022
 Heute haben wir herrausgefunden, dass der Code im Grunde genommen das macht was er soll, allerdings nur der untere Teil des Codes funktioniert. Der obere/mittlere Teil der im void loop steht, funktioniert kaum bis gar nicht. Also muss innerhalb der nächsten Stunden eine Lösung für das Problem gefunden werden.
   
-### Stundenprotololl 06.10.2022
+### Stundenprotololl zum 06.10.2022
 Mithilfe der optimierung des Codes und der Vereinfachung, haben wir es geschafft, den Code nun vollständig zum laufen zu bekommen. Der nun vollständig funktioniernede Code ist unten in der Summary zu finden.
 
 <details>
@@ -266,7 +267,7 @@ void loop() {
 ```
 </details>
   
-### Stundenprotokoll 24.10.2022
+### Stundenprotokoll zum 24.10.2022
 
 <details>
   <summary>bobm</summary>
@@ -339,6 +340,8 @@ void loop() {
 ```
 </details>
 
+### Stundenprotokol zum 03.11.22
+  Heute haben wir versucht den Code hinsichtlich der doppelten Auführung des Serial.write optimiert um die Funktionalität des Codes zu gewärleisten. 
 
 <h2 id="kapitel3">3. Ideen und To Do's</a></h2></li>
 
