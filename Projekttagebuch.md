@@ -290,44 +290,50 @@ void setup()
 {
   // defining bitrate of serial input
   Serial.begin(9600);
-  // attaching servos to pins
-  servo1.attach(servoPin1);
-  servo2.attach(servoPin2);
   servo1.write(servoAngle);
   servo2.write(servoAngle);
 }
 
+/*
+ * Codes:
+ * 
+ * a: Off
+ * b: On
+ * c: Speed 1
+ * d: Speed 2
+ * e: Speed 3
+ * f: Speed 4
+ * g: Swing Off
+ * h: Swing On
+ * i: Initialize
+ * 
+ */
+
 void loop() {
   while (Serial.available()) { // while serial is sending data -
     int in = Serial.read(); // - read data received
-    in -= 48; // get rid of that enter key
     // depending on what data is being recieved, it should turn either of the servos to the stated angle
     // servo1 (fan speed)
     // exact angles still TBD
     Serial.println(in);
-     if (in == 0) {
-        servo1.write(0);
-     } else if (in == 1) {
+    // attaching servos
+    servo1.attach(servoPin1);
+    servo2.attach(servoPin2);
+      if (in == 'c') {
         servo1.write(30);
-     } else if (in == 2) {
+     } else if (in == 'd') {
         servo1.write(60);
-     } else if (in == 3) {
+     } else if (in == 'e') {
         servo1.write(90);
-     } else if (in == 4) {
+     } else if (in == 'f') {
         servo1.write(120);
-    }
-  }
-  // servo2 (on/off)
-  // exact angles still TBD
-   while (Serial.available()) {
-    int in = Serial.read();
-    in -= 48;
-    Serial.println(in);
-     if (in == 8) {
+     // servo2 (on/off)
+     // exact angles still TBD
+     } else if (in == 'a') {
         servo2.write(0);
-     } else if (in == 9) {
+     } else if (in == 'b') {
         servo2.write(90);
-     }
+    }
   }
 }
 ```
