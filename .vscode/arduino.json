@@ -1,5 +1,6 @@
 {
-    "board": "arduino:avr:uno",
+    "board": "arduino:avr:mega",
     "sketch": "src\\server\\serverhomebridge.ino",
-    "port": "COM4"
+    "port": "COM5",
+    "configuration": "cpu=atmega2560"
 }
