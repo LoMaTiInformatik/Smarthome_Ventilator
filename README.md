@@ -444,8 +444,45 @@ int len = headlen + conlen;
 
 <h3 id="hbcode">Homebridge-Code</h3>
 
+Der Homebridge-Code ist in TypeScript (verwandt mit JavaScript) geschrieben und verwendet die Homebridge API.
+</br>
+Im folgenden Code wird zunächst HAP (HomeKit Accessory Protocol) definiert, welches für die Kommunikation mit Homebridge verwendet wird.
+</br>
+Anschließend wird das Accessory, also das Gerät, "exportiert". Das heißt es wird Homebridge offenbart, damit es gesteuert werden kann.
+
+```ts
+let hap: HAP;
+
+/*
+ * Initializer function called when the plugin is loaded.
+ */
+export = (api: API) => {
+  hap = api.hap;
+  api.registerAccessory("Ventilator", VentilatorPl);
+};
+```
 </br>
 
+Hier wird die Klasse VentilatorPl definiert. Darin werden Variabeln gesetzt, die wichtig für die Verarbeitung der Daten sind.
+
+```ts
+class VentilatorPl implements AccessoryPlugin {
+
+  private readonly log: Logging;
+  private readonly name: string;
+  private readonly ip: string;
+  private status;
+  private queue = {
+    power: 0,
+    speed: 0,
+    swing: 0
+  };
+  private processrequest = false;
+
+  private readonly ventilatorService: Service;
+  private readonly informationService: Service;
+  ```
+</br>
 
 <h2 id="kapitel4">4. Entstehung des Projekts</h2>
 Anfangs war es schwer für uns eine Idee zu bekommen, was wir denn überhaupt für ein Projekt erstellen wollen. Nach ein paar Stunden Denk- und Überlegzeit, sind wird nach vielen einzelnen Ideen und Gedankengängen, zum Schluss gekommen einen Ventilator ferngesteuert zu machen. Allerdings stand zu dem Zeitpunkt noch nicht fest, dass wir den Ventilator mit Smarthome steuern werden. Es stand nur fest, dass wir dies durch eine eventuelle Webseite machen wollen. Im verlaufe des Projekts kamen wir dann aber auf diese Idee. Dies hat uns zwar mehr Arbeit zu Hause gekostet, lohnte sich dann aber letzendlich für uns und unser Projekt.
