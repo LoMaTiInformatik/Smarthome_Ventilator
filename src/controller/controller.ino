@@ -37,11 +37,17 @@ void setup()
    Serial.begin(19200);
    // attaching relays
    pinMode(relaypin1, OUTPUT);
+   delay(100);
    pinMode(relaypin2, OUTPUT);
+   delay(100);
    pinMode(relaypin3, OUTPUT);
+   delay(100);
    pinMode(relaypin4, OUTPUT);
+   delay(100);
    pinMode(relaypin5, OUTPUT);
+   delay(100);
    pinMode(relaypin6, OUTPUT);
+   delay(100);
    // initializing
    bool active = false;
    while (!active)
@@ -69,7 +75,7 @@ void loop()
 {
    while (Serial.available())
    {                           // while serial is sending data -
-      char in = Serial.read(); // - read data received
+      int in = Serial.read(); // - read data received
       // relay1-4 (fan speed)
       Serial.println(in);
       if (in == 99)
@@ -77,7 +83,7 @@ void loop()
          digitalWrite(relaypin2, LOW);
          digitalWrite(relaypin3, LOW);
          digitalWrite(relaypin4, LOW);
-         delay(100);
+         delay(500);
          digitalWrite(relaypin1, HIGH);
       }
       else if (in == 100)
@@ -85,7 +91,7 @@ void loop()
          digitalWrite(relaypin1, LOW);
          digitalWrite(relaypin3, LOW);
          digitalWrite(relaypin4, LOW);
-         delay(100);
+         delay(500);
          digitalWrite(relaypin2, HIGH);
       }
       else if (in == 101)
@@ -93,7 +99,7 @@ void loop()
          digitalWrite(relaypin1, LOW);
          digitalWrite(relaypin2, LOW);
          digitalWrite(relaypin4, LOW);
-         delay(100);
+         delay(500);
          digitalWrite(relaypin3, HIGH);
       }
       else if (in == 102)
@@ -101,7 +107,7 @@ void loop()
          digitalWrite(relaypin1, LOW);
          digitalWrite(relaypin2, LOW);
          digitalWrite(relaypin3, LOW);
-         delay(100);
+         delay(500);
          digitalWrite(relaypin4, HIGH);
          // relay5 (fan off/on)
       }
@@ -115,11 +121,11 @@ void loop()
          digitalWrite(relaypin5, HIGH);
          // relay6 (swing off/on)
       }
-      else if (in = 103)
+      else if (in == 103)
       {
          digitalWrite(relaypin6, LOW);
       }
-      else if (in = 104)
+      else if (in == 104)
       {
          delay(100);
          digitalWrite(relaypin6, HIGH);
