@@ -49,10 +49,10 @@ Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino
 </details></br>
 <details>
   <summary>Schaltplan</summary>
-  <picture>
-    <source srcset="https://user-images.githubusercontent.com/105984356/207425594-ad6fc3ed-255a-4325-aa42-8d07242417c6.png">
-    <img alt="" src="">
-  </picture>
+    <picture>
+      <source srcset="https://user-images.githubusercontent.com/105984356/207425594-ad6fc3ed-255a-4325-aa42-8d07242417c6.png">
+      <img alt="" src="">
+    </picture>
 </details>
 </br>
 
