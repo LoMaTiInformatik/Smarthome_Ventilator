@@ -82,32 +82,44 @@ Danach folgt die Setzung der oben definierten Pins, auf Output, heißt die Pins 
 Daraufhin folgt die Inizialisierung des Codes (des Boards), die von dem Server-Arduino ausgeführt wird. Hierbei wird geprüft, ob beide Boards miteinander Kommunizieren können und Daten erhalten können. Wenn dies nicht der Fall sein sollte, wird die Error-LED aufleuchten.
 
 ```c
-void setup() {
-  // defining bitrate of serial input
-  Serial.begin(19200);
-  //attaching relays
-  pinMode(relaypin1, OUTPUT);
-  pinMode(relaypin2, OUTPUT);
-  pinMode(relaypin3, OUTPUT);
-  pinMode(relaypin4, OUTPUT);
-  pinMode(relaypin5, OUTPUT);
-  pinMode(relaypin6, OUTPUT);
-  //initializing
-  bool active = false;
-  while (!active) {
-    while(Serial.available()) {
-        char c = Serial.read();
-        if (c == 'i') {
+void setup()
+{
+   // defining bitrate of serial input
+   Serial.begin(19200);
+   // attaching relays
+   pinMode(relaypin1, OUTPUT);
+   delay(100);
+   pinMode(relaypin2, OUTPUT);
+   delay(100);
+   pinMode(relaypin3, OUTPUT);
+   delay(100);
+   pinMode(relaypin4, OUTPUT);
+   delay(100);
+   pinMode(relaypin5, OUTPUT);
+   delay(100);
+   pinMode(relaypin6, OUTPUT);
+   delay(100);
+   // initializing
+   bool active = false;
+   while (!active)
+   {
+      while (Serial.available())
+      {
+         char c = Serial.read();
+         if (c == 'i')
+         {
             Serial.write('i');
             active = true;
             digitalWrite(ledpin, LOW);
             break;
-        } else {
-          digitalWrite(ledpin, HIGH);
-          break;
-        }
-    }
-  }
+         }
+         else
+         {
+            digitalWrite(ledpin, HIGH);
+            break;
+         }
+      }
+   }
 }
 ```
 </br>
@@ -119,49 +131,66 @@ Jetzt folgt ein langer "else if" Teil. Hier wird, sobald die oben genannten Punk
 Beispiel: Wenn der Controller-Arduino ein "c" von dem Server-Arduino erhält, soll er Relay 2, 3 und 4 ausschalten, 100 Millisekunden warten und das Relay 1 einschalten.
 
 ```c
-void loop() {
-  while (Serial.available()) { // while serial is sending data -
-    char in = Serial.read(); // - read data received
-    // relay1-4 (fan speed)
-    Serial.println(in);
-      if (in == 'c') {
+void loop()
+{
+   while (Serial.available())
+   {                           // while serial is sending data -
+      int in = Serial.read(); // - read data received
+      // relay1-4 (fan speed)
+      Serial.println(in);
+      if (in == 99)
+      {
          digitalWrite(relaypin2, LOW);
          digitalWrite(relaypin3, LOW);
          digitalWrite(relaypin4, LOW);
-         delay(100);
+         delay(500);
          digitalWrite(relaypin1, HIGH);
-         } else if (in == 'd') {
-            digitalWrite(relaypin1, LOW);
-            digitalWrite(relaypin3, LOW);
-            digitalWrite(relaypin4, LOW);
-            delay(100);
-            digitalWrite(relaypin2, HIGH);
-         } else if (in == 'e') {
-            digitalWrite(relaypin1, LOW);
-            digitalWrite(relaypin2, LOW);
-            digitalWrite(relaypin4, LOW);
-            delay(100);
-            digitalWrite(relaypin3, HIGH);
-         } else if (in == 'f') {
-            digitalWrite(relaypin1, LOW);
-            digitalWrite(relaypin2, LOW);
-            digitalWrite(relaypin3, LOW);
-            delay(100);
-            digitalWrite(relaypin4, HIGH);
-     // relay5 (fan off/on)
-         } else if (in == 'a') {
-            digitalWrite(relaypin5, LOW);
-         } else if (in == 'b') {
-            delay(100);
-            digitalWrite(relaypin5, HIGH);
-     // relay6 (swing off/on)
-         } else if (in = 'g') {
-            digitalWrite(relaypin6, LOW);
-         } else if (in = 'h') {
-            delay(100);
-            digitalWrite(relaypin6, HIGH);
-     }
-  }
+      }
+      else if (in == 100)
+      {
+         digitalWrite(relaypin1, LOW);
+         digitalWrite(relaypin3, LOW);
+         digitalWrite(relaypin4, LOW);
+         delay(500);
+         digitalWrite(relaypin2, HIGH);
+      }
+      else if (in == 101)
+      {
+         digitalWrite(relaypin1, LOW);
+         digitalWrite(relaypin2, LOW);
+         digitalWrite(relaypin4, LOW);
+         delay(500);
+         digitalWrite(relaypin3, HIGH);
+      }
+      else if (in == 102)
+      {
+         digitalWrite(relaypin1, LOW);
+         digitalWrite(relaypin2, LOW);
+         digitalWrite(relaypin3, LOW);
+         delay(500);
+         digitalWrite(relaypin4, HIGH);
+         // relay5 (fan off/on)
+      }
+      else if (in == 97)
+      {
+         digitalWrite(relaypin5, LOW);
+      }
+      else if (in == 98)
+      {
+         delay(100);
+         digitalWrite(relaypin5, HIGH);
+         // relay6 (swing off/on)
+      }
+      else if (in == 103)
+      {
+         digitalWrite(relaypin6, LOW);
+      }
+      else if (in == 104)
+      {
+         delay(100);
+         digitalWrite(relaypin6, HIGH);
+      }
+   }
 }
 ```
 
