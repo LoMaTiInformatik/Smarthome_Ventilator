@@ -17,7 +17,7 @@
  * i(105): Initialisation key (DO NOT SEND!)
  *
  *
- */
+*/
 
 // defining pins
 const int relaypin1 = 7;
