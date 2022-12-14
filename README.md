@@ -525,9 +525,7 @@ Da der Schwierigkeitsgrad nicht für alle Teilnehmer der Gruppe angemessen war, 
 
 
 <h2 id="kapitel5">5. Fazit</h2>
-Das Informatikprojekt zum Thema eines Ventilators, der mit Smart Home gesteuert werden kann, hat gezeigt, dass es möglich ist, ein solches Gerät zu entwickeln und in das Smart Home System zu integrieren. Durch die Verwendung von Sensoren und Steuerungselementen kann der Ventilator nicht nur ein- und ausgeschaltet werden, sondern auch die Geschwindigkeit und Richtung der Luftzirkulation angepasst werden. Die Integration in das Smart Home System ermöglicht es, den Ventilator über eine mobile App zu bedienen und so die Raumluftqualität zu verbessern.
-</br>
-
+Das Informatikprojekt zum Thema eines Ventilators, der mit Smart Home gesteuert werden kann, hat gezeigt, dass es möglich ist, ein solches Gerät zu entwickeln und in das Smart Home System zu integrieren. Durch die Verwendung von Sensoren und Steuerungselementen kann der Ventilator nicht nur ein- und ausgeschaltet werden, sondern auch die Geschwindigkeit und Richtung der Luftzirkulation angepasst werden. Die Integration in das Smart Home System ermöglicht es, den Ventilator über eine mobile App zu bedienen und so die Raumluftqualität zu verbessern. </br> </br>
 Insgesamt hat das Projekt gezeigt, dass es möglich ist, die Funktionalität von Haushaltsgeräten durch die Verwendung von Smart Home Technologien zu erweitern und so den Komfort und die Bequemlichkeit für den Nutzer zu verbessern.
 </br>
 
