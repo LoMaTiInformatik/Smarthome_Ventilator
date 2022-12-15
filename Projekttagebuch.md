@@ -98,7 +98,7 @@ void loop() {
 Vor der heutigen Stunde haben wir zu Hause einen Code für das WLAN Modul geschrieben. Diesen Code haben wir dann auf den Arduino gespielt und damit versucht das WLAN Modul zum laufen zu bekommen. In dem Prozess wurde allerdings das WLAN Modul beschädigt und ist nun inoperabel. Allerdings haben wir ein neues Modul gefunden und dieses hat dann wieder Antworten gesendet. Ein Paar weitere Tweaks am Code und das WLAN Modul hat funktioniert. </br>
 
 ### Stundenprotokoll zum 08.09.2022
-Wir haben uns heute dazu entschieden die Idee des WLAN Moduls erstmal zu streichen. Die Entscheidung ist gefallen, da schon zum zweiten Mal ein WLAN Mudul kaputt gegangen ist und es unmöglich für uns wurde diese für unser Projekt zu verwenden. 
+Wir haben uns heute dazu entschieden die Idee des WLAN Moduls erstmal zu streichen. Die Entscheidung ist gefallen, da schon zum zweiten Mal ein WLAN Modul kaputt gegangen ist und es unmöglich für uns wurde diese für unser Projekt zu verwenden. 
 
 ### Stundenprotokoll zum 12.09.2022
 Heute haben wir uns damit beschäftigt einen Code für einen Servo Motor zu schreiben (dieser ist unten zu finden). Parallel dazu hat Lois sein WLAN Modul von Zuhause mitgebracht, dass deutlich besser funktioniert, als die Module aus der Schule. Zu Hause hat Lois an dem Code weiter gearbeitet und in der Schule weiter Fehler behoben. Das Modul funktioniert in seiner Basis.
