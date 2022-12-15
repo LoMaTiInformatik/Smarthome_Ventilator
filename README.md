@@ -48,6 +48,7 @@ Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino
   <summary>Bilder zum Projekt</summary>
 <!--Insert images and other details here-->
 </details>
+</br>
 
 <details>
   <summary>Schaltplan</summary>
@@ -57,7 +58,7 @@ Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino
       <img alt="" src="">
   </picture>
 </details>
-</br></br>
+</br>
 
 <h2 id="kapitel3">3. Erklärung des Codes</h2>
 Der Code ist in zwei Teile, den Controller-Code und den Server-Code, aufgeteilt.</br>Hier werden wir auf Beide ausführlich eingehen.
