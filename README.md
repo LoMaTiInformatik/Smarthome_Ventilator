@@ -46,7 +46,11 @@ Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino
 
 <details>
   <summary>Bilder zum Projekt</summary>
-<!--Insert images and other details here-->
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/105984356/207964309-5fc2385e-b92a-4f9d-ae1b-8b327f73db03.jpg">
+      <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/105984356/207964309-5fc2385e-b92a-4f9d-ae1b-8b327f73db03.jpg">
+      <img alt="" src="">
+  </picture>
 </details>
 </br>
 
