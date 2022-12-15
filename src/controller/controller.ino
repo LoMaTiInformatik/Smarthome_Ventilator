@@ -1,6 +1,6 @@
 /*
  * Written by Max Leon Guwa (OrangePurgatory; https://github.com/OrangePurgatory)
- * Verification pending
+ * Verification done, working
  *
  *
  *
