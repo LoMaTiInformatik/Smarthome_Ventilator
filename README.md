@@ -42,11 +42,13 @@ Hallo und herzlich willkommen zu unserer Projektseite für unser Projekt. Hier e
 <h2 id="kapitel2">2. Vorstellung des Projekts</h2>
 Smarthome wird immer beliebter in Haushalten. Dies ist auch leicht zu erklären. Smarthome erleichtert das Leben der Menschen um einiges. Es können Geräte aller Art, von allen möglichen Standorten auf der Welt gesteuert werden. Also kamen wir auf die Idee, einen Ventilator mit Arduino und Smarthome (Homebridge) steuerbar zu machen. Verwenden kann man dieses Konzept am besten an heißen Sommertagen, an denen man, wegen der starken Hitze kaum noch Kraft hat aufzustehen und von überall im selben Netzwerk, seinen Ventilator bedienen kann.</br></br>
 Das Projekt funktioniert wie folgt:</br>
-Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino angeschlossen ist. Dieser Controller-Arduino ist nur dafür zuständing, das Relay zu steuern und die Daten von dem Server-Arduino, der mit dem Controller-Arduino verbunden ist, zu verarbeiten. Der Server-Arduino ist hingegen mit einem WLAN-Modul verbunden, welches die Daten von Homebridge empfängt, welches wiederrum die Daten von einem Handy erhält. Alles funktioniert nur, wenn sich alle Geräte im selben Netzwerk befinden.</br></br>
+Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino angeschlossen ist. Dieser Controller-Arduino ist nur dafür zuständing, das Relay zu steuern und die Daten von dem Server-Arduino, der mit dem Controller-Arduino verbunden ist, zu verarbeiten. Der Server-Arduino ist hingegen mit einem WLAN-Modul verbunden, welches die Daten von Homebridge empfängt, welches wiederrum die Daten von einem Handy erhält. Alles funktioniert nur, wenn sich alle Geräte im selben Netzwerk befinden.</br>
+
 <details>
   <summary>Bilder zum Projekt</summary>
 <!--Insert images and other details here-->
-</details></br>
+</details>
+
 <details>
   <summary>Schaltplan</summary>
     <picture>
