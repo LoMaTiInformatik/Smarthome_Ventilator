@@ -46,11 +46,7 @@ Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino
 
 <details>
   <summary>Bilder zum Projekt</summary>
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/105984356/207964309-5fc2385e-b92a-4f9d-ae1b-8b327f73db03.jpg">
-      <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/105984356/207964309-5fc2385e-b92a-4f9d-ae1b-8b327f73db03.jpg">
-      <img alt="" src="">
-  </picture>
+<!--Insert images and other details here-->
 </details>
 </br>
 
@@ -520,6 +516,267 @@ class VentilatorPl implements AccessoryPlugin {
 
   private readonly ventilatorService: Service;
   private readonly informationService: Service;
+  ```
+  
+</br>
+In diesem Auschnitt wird der "constructor", also der "Bauhelfer", definiert. Dabei werden zum Beispiel die Informationen aus der Konfigurationsdatei übernommen. Danach werden alle möglichen Aktionen, die der Ventilator ausführen kann, an die auführenden Funktionen gebunden. Zu letzt wird ein Intervall aktiviert, welches alle 3 Sekunden eine Anfrage an den Ventilator schickt.
+
+```ts
+  constructor(log: Logging, config: AccessoryConfig, api: API) {
+    this.log = log;
+    this.name = config.name;
+    this.ip = "http://" + config.ip;
+    this.status = {
+      power: 0,
+      speed: 0,
+      swing: 0
+    };
+    //this.communicate(0, "no", 0);
+
+    this.ventilatorService = new hap.Service.Fanv2(this.name);
+    this.ventilatorService.getCharacteristic(hap.Characteristic.Active)
+      .onGet(this.handleActiveGet.bind(this))
+      .onSet(this.handleActiveSet.bind(this));
+
+    this.ventilatorService.getCharacteristic(hap.Characteristic.RotationSpeed)
+      .onGet(this.handleRotationSpeedGet.bind(this))
+      .onSet(this.handleRotationSpeedSet.bind(this));
+
+    this.ventilatorService.getCharacteristic(hap.Characteristic.SwingMode)
+      .onGet(this.handleSwingModeGet.bind(this))
+      .onSet(this.handleSwingModeSet.bind(this));
+
+    this.informationService = new hap.Service.AccessoryInformation()
+      .setCharacteristic(hap.Characteristic.Manufacturer, "LoMaTi")
+      .setCharacteristic(hap.Characteristic.Model, "Arduino Ventilator")
+      .setCharacteristic(hap.Characteristic.SerialNumber, "FAN001");
+
+    log.info("Switch finished initializing!");
+    setInterval(() => {
+      this.managequeue();
+    }, 1000 * 3);
+  }
+```
+</br>
+Nun kommen wir auch schon zu den ausführenden Funktionen. Ausführende Funktionen gibt es immer in zweier-Paaren. Die "get", welche für die Auslesung des jetzigen Zustandes verwendet wird, und die "set" Variante, die eine Einstellung einstellt.
+</br>
+Hier haben wir die Funktionen handleActiveGet und handleActiveSet, die sind dazu da, um den Ventilator an- und auszuschalten.
+
+```ts
+  handleActiveGet() {
+    switch (this.status.power) {
+      case 0:
+        return hap.Characteristic.Active.INACTIVE;
+      case 1:
+        return hap.Characteristic.Active.ACTIVE;
+      default:
+        this.log.debug("Got invalid response power");
+        return hap.Characteristic.Active.INACTIVE;
+    }
+  }
+
+handleActiveSet(value: CharacteristicValue) {
+    const curval = this.status.power;
+    if (true) {
+      switch (value) {
+        case hap.Characteristic.Active.INACTIVE:
+          this.communicate(1, "speed", 0);
+          this.log.debug("Power 0");
+          break;
+        case hap.Characteristic.Active.ACTIVE:
+          /*
+          this.communicate(1, "power", 1).then((rep) => {
+            this.status = rep;
+          });
+          */
+          this.log.debug("Power 1");
+          break;
+      }
+    }
+  }
+  ```
+</br>
+Die Funktionen handleRotationSpeedGet und handleRotationSpeedSet sind für die Drehgeschwindigkeit.
+
+```ts
+  handleRotationSpeedGet() {
+    return (this.status.speed * 25);
+  }
+  handleRotationSpeedSet(value: CharacteristicValue) {
+    const valnum: any = value.valueOf();
+    let num = Math.ceil(valnum / 25);
+    if (num >= 4) {num = 4;}
+    if (valnum == 0) {num = 0;}
+    this.communicate(1, "speed", num);
+  }
+  ```
+</br>
+handleSwingModeGet und handleSwingModeSet behandeln die Luftverteilungs-Einstellung.
+
+```ts
+  handleSwingModeGet() {
+    switch (this.status.swing) {
+      case 0:
+        return hap.Characteristic.SwingMode.SWING_DISABLED;
+      case 1:
+        return hap.Characteristic.SwingMode.SWING_ENABLED;
+      default:
+        this.log.debug("Got invalid response swing");
+        return hap.Characteristic.SwingMode.SWING_DISABLED;
+    }
+  }
+  handleSwingModeSet(value: CharacteristicValue) {
+    switch (value) {
+      case hap.Characteristic.SwingMode.SWING_DISABLED:
+        this.communicate(1, "swing", 0);
+        break;
+      case hap.Characteristic.SwingMode.SWING_ENABLED:
+        this.communicate(1, "swing", 1);
+        break;
+    }
+  }
+  ```
+</br>
+Jetzt kommen wir zu den "Utilities". Diese Funktionen werden von anderen Funktionen verwendet, um zu funktionieren.
+</br>
+Das hier ist die managequeue Funktion, diese managed alle ausgehenden Anfragen an den Ventilator.
+</br>
+Zuerst wird geguckt was für eine Anfrage geschickt werden muss. Anschließend wird mithilfe der Axios-API eine Anfrage an den Ventilator geschickt. Sobald die Antwort erhalten wurde, wird diese bearbeitet, damit sie vom Programm auch verstanden werden kann.
+
+```ts
+  async managequeue() {
+    if (this.queue != this.status) {
+      if (this.processrequest == false) {
+        let i = 1;
+        let act = "";
+        let val: number = 0;
+        if (i == 1) {
+          if (this.queue.speed != this.status.speed) {
+            act = "speed";
+            val = this.queue.speed;
+          } else {
+            i++;
+          }
+        }
+        if (i == 2) {
+          if (this.queue.swing != this.status.swing) {
+            act = "swing";
+            val = this.queue.swing;
+          } else {
+            i++;
+          }
+        }
+        if (i >= 3) {
+          this.log.debug("No request to make");
+          return;
+        }
+        let response;
+        try {
+          response = await axios.get((this.ip + "/?act=" + act + "&arg1=" + String(val)), { timeout: 2000 });
+        } catch(errmsgaxios) {
+          this.log.debug("An error occoured while getting the data: " + errmsgaxios);
+          setTimeout(() => {this.processrequest = false;}, 1000);
+          return;
+        }
+        let s = String(response.data);
+        s = s.replace(/\\n/g, '\\n')
+          .replace(/\\'/g, '\\\'')
+          .replace(/\\"/g, '\"')
+          .replace(/\\&/g, '\\&')
+          .replace(/\\r/g, '\\r')
+          .replace(/\\t/g, '\\t')
+          .replace(/\\b/g, '\\b')
+          .replace(/\\f/g, '\\f');
+        // Remove non-printable and other non-valid JSON characters
+        // eslint-disable-next-line no-control-regex
+        s = s.replace(/[\u0000-\u0019]+/g, '');
+        this.log.debug(s);
+
+        const data = JSON.parse(s);
+        if (response.status == 400) {
+          const text = "An error occured while getting the data: ";
+          console.warn(text + data.errmsg);
+        }
+        this.status = data;
+        this.queue[act] = data[act];
+        this.log.debug("Request handled");
+        setTimeout(() => {this.processrequest = false;}, 1000);
+      } else {
+        const text = "An error occured while getting the data: Already processing request!";
+        this.log.debug(text);
+      }
+    }
+    return;
+  }
+  ```
+</br>
+Und zu guter letzt ist da noch die communicate Funktion. Sie wird von allen ausführenden Funktionen angesprochen, um die Anfragen in die Warteschlage zusetzen.
+
+```ts
+  async managequeue() {
+    if (this.queue != this.status) {
+      if (this.processrequest == false) {
+        let i = 1;
+        let act = "";
+        let val: number = 0;
+        if (i == 1) {
+          if (this.queue.speed != this.status.speed) {
+            act = "speed";
+            val = this.queue.speed;
+          } else {
+            i++;
+          }
+        }
+        if (i == 2) {
+          if (this.queue.swing != this.status.swing) {
+            act = "swing";
+            val = this.queue.swing;
+          } else {
+            i++;
+          }
+        }
+        if (i >= 3) {
+          this.log.debug("No request to make");
+          return;
+        }
+        let response;
+        try {
+          response = await axios.get((this.ip + "/?act=" + act + "&arg1=" + String(val)), { timeout: 2000 });
+        } catch(errmsgaxios) {
+          this.log.debug("An error occoured while getting the data: " + errmsgaxios);
+          setTimeout(() => {this.processrequest = false;}, 1000);
+          return;
+        }
+        let s = String(response.data);
+        s = s.replace(/\\n/g, '\\n')
+          .replace(/\\'/g, '\\\'')
+          .replace(/\\"/g, '\"')
+          .replace(/\\&/g, '\\&')
+          .replace(/\\r/g, '\\r')
+          .replace(/\\t/g, '\\t')
+          .replace(/\\b/g, '\\b')
+          .replace(/\\f/g, '\\f');
+        // Remove non-printable and other non-valid JSON characters
+        // eslint-disable-next-line no-control-regex
+        s = s.replace(/[\u0000-\u0019]+/g, '');
+        this.log.debug(s);
+
+        const data = JSON.parse(s);
+        if (response.status == 400) {
+          const text = "An error occured while getting the data: ";
+          console.warn(text + data.errmsg);
+        }
+        this.status = data;
+        this.queue[act] = data[act];
+        this.log.debug("Request handled");
+        setTimeout(() => {this.processrequest = false;}, 1000);
+      } else {
+        const text = "An error occured while getting the data: Already processing request!";
+        this.log.debug(text);
+      }
+    }
+    return;
+  }
   ```
 </br>
 
