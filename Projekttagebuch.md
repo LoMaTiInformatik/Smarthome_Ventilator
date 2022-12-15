@@ -130,13 +130,16 @@ void loop()
    delay(2000);
 }
 ```
+  
 </details>
   
 
+  
 ### Stundenprotokoll zum 19.09.2022
 Wir haben heute an einem Script gearbeitet, dass einen Servo Motor auf Knopfdruck drehen lässt. Das Script funktioniert von Grund auf, enthält allerdings Bugs, die den Servo Motor zum zittern bringt. Es muss in der nächsten Zeit daran gearbeitet werden, diese Bugs zu beheben. Der dazugehörige Code befindet sich unten angehängt. Währenddessen war Lois mit dem W-Lan Modul am Kämpfen. Dieses schickte keine vollstänge Antwort. Der Fehler war dann am Ende der Stunde behoben.
   
-<details>
+
+  <details>
   <summary>(Broken) Code für das Steuern eines Servo Motors auf Knopfdruck</summary>
 
 ```c
@@ -173,10 +176,12 @@ void loop() {
 }
 ```
 </details>
+    
   
 ### Stundenprotokoll zum 22.09.2022
 Heute haben wir an weiter an dem Code von der letzten Stunde gearbeitet und versucht das Problem mit dem zittern zu beheben, mit Erfolg. Der voll funktionstüchtige Code, ohne Bugs, ist unten in der Summary zu finden. Wir haben es so gemacht, dass bei jedem Tastendruck, die Tastendrücke gezählt werden und bei jedem neuen Tastendruck, sich der Arduino in die andere Richtung dreht. Zeitgleich versuchte Lois einen Servo mit dem W-Lan Modul zu verknüpfen, welches sich wieder sträubte eine vollständige Antwort zu schicken. Das Problem lag an der "Servo.h" API, die aus irgendeinem unbekannten Grund das W-Lan Modul beeinträchtigt.
 
+    
 <details>
   <summary>(Broken) Code für das Steuren eines Servo Motors auf Knopfdruck</summary>
 
@@ -227,12 +232,14 @@ void loop() {
 ```
 </details>
   
+  
 ### Stundenprotokoll zum 26.09.2022
 Heute haben wir herrausgefunden, dass der Code im Grunde genommen das macht was er soll, allerdings nur der untere Teil des Codes funktioniert. Der obere/mittlere Teil der im void loop steht, funktioniert kaum bis gar nicht. Also muss innerhalb der nächsten Stunden eine Lösung für das Problem gefunden werden.
   
 ### Stundenprotololl zum 06.10.2022
 Mithilfe der optimierung des Codes und der Vereinfachung, haben wir es geschafft, den Code nun vollständig zum laufen zu bekommen. Der nun vollständig funktioniernede Code ist unten in der Summary zu finden.
 
+  
 <details>
   <summary>(Fixed) Code für das Steuern eines Servo Motors auf Knopfdruck</summary>
 
@@ -279,9 +286,11 @@ void loop() {
 ```
 </details>
   
+  
 ### Stundenprotokoll zum 24.10.2022
 Wir haben einen Code für das steuern von zwei Servos über Serial geschieben, um die Daten vom Server zu verarbeiten.
 
+  
 <details>
   <summary>Code für steuern von zwei Servos über Serial</summary>
   
@@ -360,12 +369,14 @@ void loop() {
 ```
 </details>
 
+  
 ### Stundenprotokol zum 03.11.2022
 Heute haben wir versucht den Code hinsichtlich der doppelten Auführung des Serial.read optimiert um die Funktionalität des Codes zu gewärleisten. 
 
 ### Stundenprotokol zum 07.11.2022
 Wir haben heute ein Relay und eine Error LED zum Controller hinzugefügt. Das Relay wird für die Steuerung von der Luftlenkplatte verwendet und die Error LED zeigt an, wenn etwas am Servo/Controller nicht korrekt funktioniert. Ebenfalls haben wir Homebridge in unser Projekt mit eingebunden. Da der Code des Servers(Der Kommunikations-Arduino), die letzten Paar Stunden nicht funktionierte, wechselten wir auf einen Arduino Mega2560. Jetzt funktioniert dieser Code wie er soll.
 
+  
 <details>
   <summary>Oberer Code mit Additionen</summary>
 
@@ -467,12 +478,14 @@ void loop() {
 ```
 </details>
 
+  
 ### Stundenprotokol zum 17.11.2022
 Wir versuchen in dieser Stunde den Code so zu reduzieren um den Code von einem Arduino Mega laufen zulassen. Dies hat allerdings nicht funktioniert und wir haben Troubleshooting am Code betrieben. Außerdem haben wir das Controller Script finalisiert, indem wir die Servos mit Relays ausgetauscht haben und das Script dementsprechend umgeschrieben haben. Der umgeschriebene Code ist unten zu finden.
   
 ### Stundenprotokol zum 21.11.2022
 Wir optimieren in dieser Stunde das Relay und führen unseren ersten echten Test des Codes durch.
 
+  
 <details>
   <summary>Oberer Code mit Additionen</summary>
 
@@ -585,9 +598,11 @@ void loop() {
 ```
 </details>
 
+  
 ### Stunden darauffolgend zusammengefasst
 In den darrauffolgenden Stunden haben wir kleinere Änderungen an beiden Codes gemacht, um die Funktionalität zu optimieren und diese auch sicherzustellen.
 
+  
 <details>
   <summary>Optimierter und fertiger Code zum steuern des Relays</summary>
 
@@ -732,6 +747,7 @@ void loop()
 
 <h2 id="kapitel3">3. Ideen und To Do's</a></h2></li>
 
+  
 ### Ideen
 
 - Drehgeschwindichkeitsregler auseinander bauen und mit Servomotor kontrolierbar machen.
