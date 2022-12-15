@@ -39,6 +39,7 @@
   <li><a href="#stundenprotokoll-zum-07112022">Stundenprotokoll zum 07.11.2022</a></li>
   <li><a href="#stundenprotokoll-zum-17112022">Stundenprotokoll zum 17.11.2022</a></li>
   <li><a href="#stundenprotokoll-zum-21112022">Stundenprotokoll zum 21.11.2022</a></li>
+  <li><a href="#stunden-darrauffolgend-zusammengefasst">Stunden darrauffolgend zusammengefasst</a></li>
 </ul></details></p>
 <p style="margin-top: 5px;"><a href="#kapitel3">3. Ideen und To Do's</a></p>
 <p><a href="#kapitel4">4. Materialien</a></p>
