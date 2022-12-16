@@ -35,7 +35,7 @@
 
 <h2 id="kapitell">1. Einleitung</h2>
 Hallo und herzlich willkommen zu unserer Projektseite für unser Projekt. Hier erklären wir das Verfahren, unsere Ideen und erklären das Endprodukt.</br>
-<a href="https://github.com/LoMaTiInformatik/Smarthome_Ventilator"> Hier</a> kommst du zu der Arduino GitHub Repository, <a href="https://github.com/LoMaTiInformatik/Ventilator_homebridge_plugin"> Hier</a> zur Homebridge GitHub Repository und <a href="https://github.com/LoMaTiInformatik/Smarthome_Ventilator/blob/main/Projekttagebuch.md"> hier</a> zur Protokollseite.
+<a href="https://github.com/LoMaTiInformatik/Smarthome_Ventilator"> Hier</a> kommst du zu der Arduino GitHub Repository, <a href="https://github.com/LoMaTiInformatik/Ventilator_homebridge_plugin"> hier</a> zur Homebridge GitHub Repository und <a href="https://github.com/LoMaTiInformatik/Smarthome_Ventilator/blob/main/Projekttagebuch.md"> hier</a> zur Protokollseite.
 </br>
 
 
