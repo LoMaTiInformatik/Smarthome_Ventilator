@@ -44,6 +44,8 @@ Smarthome wird immer beliebter in Haushalten. Dies ist auch leicht zu erklären.
 Das Projekt funktioniert wie folgt:</br>
 Der Ventilator ist an ein Relay angeschlossen, welches an den Controller-Arduino angeschlossen ist. Dieser Controller-Arduino ist nur dafür zuständing, das Relay zu steuern und die Daten von dem Server-Arduino, der mit dem Controller-Arduino verbunden ist, zu verarbeiten. Der Server-Arduino ist hingegen mit einem WLAN-Modul verbunden, welches die Daten von Homebridge empfängt, welches wiederrum die Daten von einem Handy erhält. Alles funktioniert nur, wenn sich alle Geräte im selben Netzwerk befinden.</br></br>
 
+https://user-images.githubusercontent.com/105984356/208155188-c41058ad-309b-4b1a-825b-8ae74a2c6f2c.mp4
+
 <details>
   <summary>Bilder zum Projekt</summary>
     <picture>
