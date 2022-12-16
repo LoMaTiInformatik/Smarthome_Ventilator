@@ -42,7 +42,7 @@ bool AlwaysReAuth = false;
 
 // Test parameters (DO NOT USE)
 
-bool testModecon = true; // Disables connection to controller
+bool testModecon = false; // Disables connection to controller
 
 #include <SoftwareSerial.h>
 

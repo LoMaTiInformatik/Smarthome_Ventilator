@@ -34,20 +34,25 @@ int in = 0;
 void setup()
 {
    // defining bitrate of serial input
+   digitalWrite(relaypin1, HIGH);
+   digitalWrite(relaypin2, HIGH);
+   digitalWrite(relaypin3, HIGH);
+   digitalWrite(relaypin4, HIGH);
+   digitalWrite(relaypin5, HIGH);
+   digitalWrite(relaypin6, HIGH);
    Serial.begin(19200);
    // attaching relays
    pinMode(relaypin1, OUTPUT);
-   delay(100);
+   
    pinMode(relaypin2, OUTPUT);
-   delay(100);
+   
    pinMode(relaypin3, OUTPUT);
-   delay(100);
+   
    pinMode(relaypin4, OUTPUT);
-   delay(100);
+   
    pinMode(relaypin5, OUTPUT);
-   delay(100);
+   
    pinMode(relaypin6, OUTPUT);
-   delay(100);
    // initializing
    bool active = false;
    while (!active)
@@ -80,55 +85,55 @@ void loop()
       Serial.println(in);
       if (in == 99)
       {
-         digitalWrite(relaypin2, LOW);
-         digitalWrite(relaypin3, LOW);
-         digitalWrite(relaypin4, LOW);
+         digitalWrite(relaypin2, HIGH);
+         digitalWrite(relaypin3, HIGH);
+         digitalWrite(relaypin4, HIGH);
          delay(500);
-         digitalWrite(relaypin1, HIGH);
+         digitalWrite(relaypin1, LOW);
       }
       else if (in == 100)
       {
-         digitalWrite(relaypin1, LOW);
-         digitalWrite(relaypin3, LOW);
-         digitalWrite(relaypin4, LOW);
+         digitalWrite(relaypin1, HIGH);
+         digitalWrite(relaypin3, HIGH);
+         digitalWrite(relaypin4, HIGH);
          delay(500);
-         digitalWrite(relaypin2, HIGH);
+         digitalWrite(relaypin2, LOW);
       }
       else if (in == 101)
       {
-         digitalWrite(relaypin1, LOW);
-         digitalWrite(relaypin2, LOW);
-         digitalWrite(relaypin4, LOW);
+         digitalWrite(relaypin1, HIGH);
+         digitalWrite(relaypin2, HIGH);
+         digitalWrite(relaypin4, HIGH);
          delay(500);
-         digitalWrite(relaypin3, HIGH);
+         digitalWrite(relaypin3, LOW);
       }
       else if (in == 102)
       {
-         digitalWrite(relaypin1, LOW);
-         digitalWrite(relaypin2, LOW);
-         digitalWrite(relaypin3, LOW);
+         digitalWrite(relaypin1, HIGH);
+         digitalWrite(relaypin2, HIGH);
+         digitalWrite(relaypin3, HIGH);
          delay(500);
-         digitalWrite(relaypin4, HIGH);
+         digitalWrite(relaypin4, LOW);
          // relay5 (fan off/on)
       }
       else if (in == 97)
       {
-         digitalWrite(relaypin5, LOW);
+         digitalWrite(relaypin5, HIGH);
       }
       else if (in == 98)
       {
          delay(100);
-         digitalWrite(relaypin5, HIGH);
+         digitalWrite(relaypin5, LOW);
          // relay6 (swing off/on)
       }
       else if (in == 103)
       {
-         digitalWrite(relaypin6, LOW);
+         digitalWrite(relaypin6, HIGH);
       }
       else if (in == 104)
       {
          delay(100);
-         digitalWrite(relaypin6, HIGH);
+         digitalWrite(relaypin6, LOW);
       }
    }
 }
