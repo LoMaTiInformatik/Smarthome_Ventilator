@@ -806,7 +806,7 @@ Insgesamt hat das Projekt gezeigt, dass es möglich ist, die Funktionalität von
 </br>
 
 
-<h2 id="kapitell">7. Eigenständigkeitserklärung</h2>
+<h2 id="kapitel7">7. Eigenständigkeitserklärung</h2>
 
 <b>Eigenständigkeitserklärung</b></br>
 Wir erklären, dass wir die vorliegende Arbeit selbstständig und ohne Benutzung anderer als den 
